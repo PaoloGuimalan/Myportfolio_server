@@ -33,7 +33,23 @@ const server_app = app.listen(PORT, () => {
 
 app.get('/works', (req, res) => {
 
-    ProjectsList.find((err, result) => {
+    ProjectsList.find({}, {title: 1, projectID: 1, image: 1}, (err, result) => {
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.send(result);
+            // console.log(result)
+        }
+    })
+
+})
+
+app.get('/project/:projectID', (req, res) => {
+
+    const projectID = req.params.projectID;
+
+    ProjectsList.findOne({projectID: projectID}, (err, result) => {
         if(err){
             console.log(err);
         }
