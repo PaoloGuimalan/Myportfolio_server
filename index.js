@@ -21,6 +21,7 @@ async function connectMongo(){
 }
 
 const ProjectsList = require("./schema/projects");
+const WorkExp = require("./schema/workexp")
 
 const server_app = app.listen(PORT, () => {
     console.log(`Port Running: ${PORT}`)
@@ -36,6 +37,7 @@ app.get('/works', (req, res) => {
     ProjectsList.find({}, {title: 1, projectID: 1, image: 1}, (err, result) => {
         if(err){
             console.log(err);
+            res.send({ status: false })
         }
         else{
             res.send(result);
@@ -45,6 +47,18 @@ app.get('/works', (req, res) => {
 
 })
 
+app.get('/workExp', (req, res) => {
+    WorkExp.find({}, (err, result) => {
+        if(err){
+            console.log(err)
+            res.send({ status: false })
+        }
+        else{
+            res.send(result)
+        }
+    })
+})
+
 app.get('/project/:projectID', (req, res) => {
 
     const projectID = req.params.projectID;
@@ -52,6 +66,7 @@ app.get('/project/:projectID', (req, res) => {
     ProjectsList.findOne({projectID: projectID}, (err, result) => {
         if(err){
             console.log(err);
+            res.send({ status: false })
         }
         else{
             res.send(result);
